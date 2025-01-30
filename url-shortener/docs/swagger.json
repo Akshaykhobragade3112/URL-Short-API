@@ -1,0 +1,120 @@
+{
+    "swagger": "2.0",
+    "info": {
+      "description": "API for a custom URL Shortener with analytics and user authentication.",
+      "version": "1.0.0",
+      "title": "URL Shortener API"
+    },
+    "host": "localhost:3000",
+    "basePath": "/api",
+    "tags": [
+      {
+        "name": "shorten",
+        "description": "Operations about URL shortening"
+      },
+      {
+        "name": "analytics",
+        "description": "Access to URL analytics"
+      },
+      {
+        "name": "authentication",
+        "description": "Operations for user authentication"
+      }
+    ],
+    "schemes": ["http", "https"],
+    "paths": {
+      "/shorten": {
+        "post": {
+          "tags": ["shorten"],
+          "summary": "Create a short URL",
+          "description": "This endpoint is for creating a new short URL.",
+          "consumes": ["application/json"],
+          "produces": ["application/json"],
+          "parameters": [
+            {
+              "in": "body",
+              "name": "body",
+              "description": "Object containing the long URL and optional custom alias",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/CreateUrlRequest"
+              }
+            }
+          ],
+          "responses": {
+            "201": {
+              "description": "URL created successfully",
+              "schema": {
+                "$ref": "#/definitions/UrlResponse"
+              }
+            },
+            "400": {
+              "description": "Invalid input, object invalid"
+            }
+          }
+        }
+      },
+      "/shorten/{alias}": {
+        "get": {
+          "tags": ["shorten"],
+          "summary": "Redirect to the original URL",
+          "description": "This endpoint redirects to the original URL based on the short URL alias.",
+          "parameters": [
+            {
+              "name": "alias",
+              "in": "path",
+              "required": true,
+              "type": "string",
+              "description": "The alias of the short URL"
+            }
+          ],
+          "responses": {
+            "302": {
+              "description": "Redirection to original URL"
+            },
+            "404": {
+              "description": "Alias not found"
+            }
+          }
+        }
+      }
+    },
+    "definitions": {
+      "CreateUrlRequest": {
+        "type": "object",
+        "required": [
+          "longUrl"
+        ],
+        "properties": {
+          "longUrl": {
+            "type": "string",
+            "format": "url",
+            "description": "The original URL to shorten"
+          },
+          "customAlias": {
+            "type": "string",
+            "description": "Optional custom alias for the URL"
+          },
+          "topic": {
+            "type": "string",
+            "description": "Optional topic for categorizing the URL"
+          }
+        }
+      },
+      "UrlResponse": {
+        "type": "object",
+        "properties": {
+          "shortUrl": {
+            "type": "string",
+            "description": "The generated short URL"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Timestamp of URL creation"
+          }
+        }
+      }
+    }
+  }
+  
