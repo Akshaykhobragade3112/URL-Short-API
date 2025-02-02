@@ -23,6 +23,8 @@ A simple, scalable URL shortener built with Node.js, MongoDB, and Google Sign-In
 | POST   | `/api/shorten`            | Create Short URL       |
 | GET    | `/api/shorten/:alias`     | Redirect to Long URL   |
 | GET    | `/api/analytics/:alias`   | Get Analytics          |
+| GET    | `/api/analytics/topic/:a` | Get TopicBased Analytic|
+| GET    | `/api/analytics/overall`  | Get Overall Analytics  |
 
 ## Deployment
 - Deployed on [Render](https://render.com/)
